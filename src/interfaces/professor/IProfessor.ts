@@ -1,6 +1,6 @@
 export interface IProfessor{
   cod_prof: string,
   nome: string,
-  endereço: string,
+  endereco: string,
   cidade: string
 }
