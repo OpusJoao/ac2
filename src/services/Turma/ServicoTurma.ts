@@ -33,6 +33,16 @@ export default class ServicoTurma implements IServicoTurma{
           msg: mensagem
         }  
       }
+
+      if(!await this.verificaTurmaPorDisciplinaEProfessor(turma)){
+        mensagem = "Turma ja cadastrada com mesma disciplina e professor"
+        console.error(`[ServicoTurma.criar] ${mensagem}`)
+        return {
+          succeso: turmaFoiCriado,
+          msg: mensagem
+        }
+      }
+
       turmaFoiCriado = await this.turmaRepositorio.criar(turma)
     }catch(e: any){
       console.error("[ServicoTurma.criar] Erro ao criar turma", e)
@@ -95,6 +105,12 @@ export default class ServicoTurma implements IServicoTurma{
       
     })
     
+  }
+
+  async verificaTurmaPorDisciplinaEProfessor(turma: ITurma): Promise<boolean>{
+    const turmaEncontrada = await this.buscar({primeiroCampo: "cod_disc", operacao: "==", segundoCampo: turma?.cod_disc})
+    
+    return turmaEncontrada[0]?.cod_prof != turma?.cod_prof
   }
 
   
