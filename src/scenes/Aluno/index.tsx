@@ -1,9 +1,10 @@
-import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import ServicoAluno from '../../services/Aluno/ServicoAluno';
 import AlunoRepositorioFirebase from '../../repositories/AlunoRepositorioFirebase';
 import db from '../../database/firebase/db';
 import { useEffect, useState } from 'react';
 import { IAluno } from '../../interfaces/aluno/IAluno';
+import { launchImageLibrary } from 'react-native-image-picker'
 
 export default function TelaAluno(){
   const servicoAluno = new ServicoAluno(new AlunoRepositorioFirebase(db))
@@ -74,6 +75,16 @@ export default function TelaAluno(){
     return todosAlunos
   }
 
+  function launchImagePicker(){
+    
+    launchImageLibrary({
+      mediaType: 'photo',
+      quality: 0.6,
+    }, (response) => {
+      console.log(response)
+    })
+  }
+
   useEffect(() => {
     buscaTodosAlunos().then(alunos => {
       return setAlunos(alunos);
@@ -101,7 +112,12 @@ export default function TelaAluno(){
       <Text>Cidade</Text>
       <TextInput value={aluno.cidade} onChangeText={onChangeCidadeAluno} style={{ borderColor: "#666", borderWidth: 1, padding: 8 }} />
       <Text>Foto</Text>
-      <TextInput value={aluno.foto} onChangeText={onChangeFotoAluno} style={{ borderColor: "#666", borderWidth: 1, padding: 8 }} />
+      {/* <TextInput value={aluno.foto} style={{ borderColor: "transparent", borderWidth: 1, padding: 8, backgroundColor: '#ededed'}} editable={false}/> */}
+      
+      <TouchableOpacity onPress={launchImagePicker} style={{margin: 8, padding: 8, backgroundColor: 'rgb(33, 150, 243)'}}>
+        <Text style={{color: 'white'}}>Selecione uma foto</Text>
+      </TouchableOpacity>
+      
       <Button onPress={onPressSalvarAluno} title={carregando ? 'Carregando' : 'Salvar aluno'} />
 
       <FlatList data={alunos} renderItem={renderizaAlunoFlatList} ItemSeparatorComponent={separador} keyExtractor={aluno => aluno.matricula} />
