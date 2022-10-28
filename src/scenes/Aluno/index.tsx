@@ -82,6 +82,9 @@ export default function TelaAluno(){
       quality: 0.6,
     }, (response) => {
       console.log(response)
+      if(response && !response.errorCode && !response?.didCancel && response?.assets?.length){
+        onChangeFotoAluno(response?.assets[0]?.uri || '')
+      }
     })
   }
 
