@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TelaStackMenu from "./src/scenes/Menu/StackMenu";
 import TelaStackHome from "./src/scenes/Home/StackHome";
 import { Image } from "react-native";
+import TelaStackConfiguracoes from "./src/scenes/Configuracoes/StackConfiguracoes";
 
 const Tab = createBottomTabNavigator();
 
@@ -40,7 +41,7 @@ export default function App() {
         />
         <Tab.Screen
           name="Configurações"
-          component={TelaStackMenu}
+          component={TelaStackConfiguracoes}
           options={{
             tabBarIcon: () => (
               <Image
