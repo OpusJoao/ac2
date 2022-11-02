@@ -6,13 +6,15 @@ import TelaDisciplina from "./src/scenes/Disciplina";
 import TelaProfessor from "./src/scenes/Professor";
 import TelaTurma from "./src/scenes/Turma";
 import TelaHome from "./src/scenes/Home";
+import TelaMenu from "./src/scenes/Menu";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Menu">
+        <Stack.Screen name="Menu" component={TelaMenu} />
         <Stack.Screen name="Home" component={TelaHome} />
         <Stack.Screen name="Historico" component={TelaHistorico} />
         <Stack.Screen name="Aluno" component={TelaAluno} />
