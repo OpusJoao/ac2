@@ -34,24 +34,24 @@ export default class AlunoRepositorioFirebase implements IAlunoRepositorio{
     return alunosAchados
   }
   
-async buscarTodosAlunos(limite: number = -1): Promise<IAluno[]>{
-  let alunosAchados: IAluno[] = []
-  const documentos = limite > -1 ? 
-    await getDocs(query(collection(this.db, 'Aluno'), limit(limite))) :
-    await getDocs(collection(this.db, 'Aluno'))
+  async buscarTodosAlunos(limite: number = -1): Promise<IAluno[]>{
+    let alunosAchados: IAluno[] = []
+    const documentos = limite > -1 ? 
+      await getDocs(query(collection(this.db, 'Aluno'), limit(limite))) :
+      await getDocs(collection(this.db, 'Aluno'))
 
-  documentos.forEach(documento => {
-    const dadosDoDocumento = documento.data()
-      alunosAchados.push({
-        cidade: dadosDoDocumento?.cidade,
-        endereco: dadosDoDocumento?.endereco,
-        foto: dadosDoDocumento?.foto,
-        matricula: dadosDoDocumento?.matricula,
-        nome: dadosDoDocumento?.nome
-      })
-  })
+    documentos.forEach(documento => {
+      const dadosDoDocumento = documento.data()
+        alunosAchados.push({
+          cidade: dadosDoDocumento?.cidade,
+          endereco: dadosDoDocumento?.endereco,
+          foto: dadosDoDocumento?.foto,
+          matricula: dadosDoDocumento?.matricula,
+          nome: dadosDoDocumento?.nome
+        })
+    })
 
-  return alunosAchados
-}
+    return alunosAchados
+  }
 
 }
