@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, Button } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 
 export default function TelaMenu({ navigation }: any) {
   const styles = StyleSheet.create({
@@ -24,9 +24,6 @@ export default function TelaMenu({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.button} onPress={() => navigation.push("Home")}>
-        <Text style={styles.text}>Home</Text>
-      </Pressable>
       <Pressable style={styles.button} onPress={() => navigation.push("Aluno")}>
         <Text style={styles.text}>Aluno</Text>
       </Pressable>
