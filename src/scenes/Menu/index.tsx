@@ -1,95 +1,6 @@
-import {
-  Button,
-  FlatList,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  Pressable,
-} from "react-native";
-import ServicoAluno from "../../services/Aluno/ServicoAluno";
-import AlunoRepositorioFirebase from "../../repositories/AlunoRepositorioFirebase";
-import db from "../../database/firebase/db";
-import { useEffect, useState } from "react";
-import { IAluno } from "../../interfaces/aluno/IAluno";
+import { StyleSheet, Text, View, Pressable, Button } from "react-native";
 
-export default function TelaMenu() {
-  const servicoAluno = new ServicoAluno(new AlunoRepositorioFirebase(db));
-  const [aluno, setAluno] = useState<IAluno>({
-    matricula: "",
-    nome: "",
-    endereco: "",
-    cidade: "",
-    foto: "",
-  });
-
-  const [alunos, setAlunos] = useState<IAluno[]>([]);
-
-  const [carregando, setCarregando] = useState(false);
-
-  function onChangeNomeAluno(input: string) {
-    setAluno({ ...aluno, nome: input });
-  }
-
-  function onChangeMatriculaAluno(input: string) {
-    setAluno({ ...aluno, matricula: input });
-  }
-
-  function onChangeEnderecoAluno(input: string) {
-    setAluno({ ...aluno, endereco: input });
-  }
-
-  function onChangeCidadeAluno(input: string) {
-    setAluno({ ...aluno, cidade: input });
-  }
-
-  function onChangeFotoAluno(input: string) {
-    setAluno({ ...aluno, foto: input });
-  }
-
-  async function onPressSalvarAluno() {
-    setCarregando(true);
-    const alunoCriado = await servicoAluno.criar(aluno);
-    alert(alunoCriado.msg);
-    setCarregando(false);
-
-    buscaTodosAlunos().then((alunos) => {
-      return setAlunos(alunos);
-    });
-  }
-
-  function renderizaAlunoFlatList({ item }: any) {
-    return (
-      <Text>
-        [{item.matricula}] {item.nome} - {item.endereco}, {item.cidade}
-      </Text>
-    );
-  }
-
-  function separador() {
-    return (
-      <View
-        style={{
-          margin: 4,
-          height: 1,
-          width: "100%",
-          backgroundColor: "purple",
-        }}
-      />
-    );
-  }
-
-  async function buscaTodosAlunos() {
-    const todosAlunos = await servicoAluno.buscarTodosAlunos();
-    return todosAlunos;
-  }
-
-  useEffect(() => {
-    buscaTodosAlunos().then((alunos) => {
-      return setAlunos(alunos);
-    });
-  }, []);
-
+export default function TelaMenu({ navigation }: any) {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -99,21 +10,47 @@ export default function TelaMenu() {
     },
     button: {
       marginBottom: "5%",
+      height: "5%",
+      width: "40%",
       alignItems: "center",
       justifyContent: "center",
+      backgroundColor: "#1E90FF",
+      borderRadius: 5,
+    },
+    text: {
+      color: "white",
     },
   });
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.button} onPress={() => window.alert("teste")}>
-        <Text>Home</Text>
+      <Pressable style={styles.button} onPress={() => navigation.push("Home")}>
+        <Text style={styles.text}>Home</Text>
       </Pressable>
-      <Button title="Aluno" />
-      <Button title="Professor" />
-      <Button title="Disciplina" />
-      <Button title="Turma" />
-      <Button title="Historico" />
+      <Pressable style={styles.button} onPress={() => navigation.push("Aluno")}>
+        <Text style={styles.text}>Aluno</Text>
+      </Pressable>
+      <Pressable
+        style={styles.button}
+        onPress={() => navigation.push("Professor")}
+      >
+        <Text style={styles.text}>Professor</Text>
+      </Pressable>
+      <Pressable
+        style={styles.button}
+        onPress={() => navigation.push("Disciplina")}
+      >
+        <Text style={styles.text}>Disciplina</Text>
+      </Pressable>
+      <Pressable style={styles.button} onPress={() => navigation.push("Turma")}>
+        <Text style={styles.text}>Turma</Text>
+      </Pressable>
+      <Pressable
+        style={styles.button}
+        onPress={() => navigation.push("Historico")}
+      >
+        <Text style={styles.text}>Histórico</Text>
+      </Pressable>
     </View>
   );
 }
