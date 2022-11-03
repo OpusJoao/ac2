@@ -30,7 +30,7 @@ export default function TelaHome() {
   return (
     <View style={styles.container}>
       {integrantes.map((i) => (
-        <View style={styles.user}>
+        <View style={styles.user} key={i.RA}>
           <Image
             style={{ width: 100, height: 100 }}
             source={{
