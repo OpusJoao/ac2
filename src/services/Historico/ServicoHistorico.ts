@@ -51,8 +51,48 @@ export default class ServicoHistorico implements IServicoHistorico{
       throw e
     }
     
-    mensagem = "Turma criado com sucesso"
+    mensagem = "Historico criado com sucesso"
     console.log(`[ServicoHistorico.criar] ${mensagem}`)
+    return {
+      succeso: historicoFoiCriado,
+      msg: mensagem
+    }
+  }
+
+  async alterar(historico: IHistorico): Promise<{ succeso: boolean, msg: string } >{
+    let historicoFoiCriado: boolean = false
+    let mensagem: string = ""
+    const historicoValido = true
+    
+    if(!historicoValido){
+      mensagem = "Erro ao criar historico, historico inválida"
+      this.mostrarMensagemErro(mensagem)
+
+      return {
+        succeso: historicoFoiCriado,
+        msg: mensagem
+      }
+    }
+    try{
+      if(!await this.verificaSeHistoricoExiste(historico.cod_historico)){
+        mensagem = "Historico não cadastrado"
+        
+        return {
+          succeso: historicoFoiCriado,
+          msg: mensagem
+        }  
+      }
+      
+
+      historicoFoiCriado = await this.historicoRepositorio.criar(historico)
+    }catch(e: any){
+      console.error("[ServicoHistorico.alterar] Erro ao alterar historico", e)
+      historicoFoiCriado = false
+      throw e
+    }
+    
+    mensagem = "Historico Alterado com sucesso"
+    console.log(`[ServicoHistorico.alterar] ${mensagem}`)
     return {
       succeso: historicoFoiCriado,
       msg: mensagem
@@ -104,6 +144,11 @@ export default class ServicoHistorico implements IServicoHistorico{
   async buscar(queryBusca: QueryBusca): Promise<IHistorico[]>{
     const todosHistoricos = await this.historicoRepositorio.buscar(queryBusca)
     return todosHistoricos
+  }
+
+  async deletar(cod_historico: string): Promise<boolean>{
+    const foiDeletado = await this.historicoRepositorio.deletar(cod_historico)
+    return foiDeletado
   }
 
   mostrarMensagemErro(mensagem: string): void{
