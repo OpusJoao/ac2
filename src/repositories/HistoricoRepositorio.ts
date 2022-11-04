@@ -1,10 +1,11 @@
-import { addDoc, collection, doc, Firestore, getDoc, getDocs, limit, query, setDoc, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, Firestore, getDoc, getDocs, limit, query, setDoc, where } from "firebase/firestore";
 import { IHistorico } from "../interfaces/historico/IHistorico";
 import { IHistoricoRepositorio, QueryBusca } from "../interfaces/historico/IHistoricoRepositorio";
 
 export default class HistoricoRepositorioFirebase implements IHistoricoRepositorio{
   
   constructor(private readonly db: Firestore){}
+ 
   
   async criar(historico: IHistorico): Promise<boolean> {
     try{
@@ -52,6 +53,20 @@ async buscarTodosHistoricos(limite: number = -1): Promise<IHistorico[]>{
   })
 
   return historicosAchadas
+}
+
+async deletar(cod_historico: string): Promise<boolean> {
+  try{
+    const deletado = await deleteDoc(doc(this.db, 'Historico',cod_historico))
+    return true
+  }catch(e: any){
+    console.error(`[HistoricoRepositorioFirebase.deletar] Erro ao deletar historico`, cod_historico, e)
+    return false
+  }
+}
+
+alterar(cod_historico: string, historico: IHistorico): Promise<boolean> {
+  throw new Error("Method not implemented.");
 }
 
 }
