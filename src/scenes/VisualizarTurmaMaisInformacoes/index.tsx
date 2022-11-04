@@ -30,6 +30,8 @@ export default function TelaVisualizarTurmaMaisInformacoes(props: any){
 
   const [alunos, setAlunos] = useState<IAluno[]>([])
 
+  const [temTimeout, setTemTimeout] = useState(false)
+
 
   function renderizaAlunosFlatList({item}: {item:IAluno}) {
     console.log(item)
@@ -52,7 +54,7 @@ export default function TelaVisualizarTurmaMaisInformacoes(props: any){
             }}
           />
 
-        <Button title={item.nome}/>
+        <Button title={item.nome} onPress={()=> props.navigation.navigate('VisualizarAluno', {aluno: item})}/>
 
       </View>
     )
@@ -77,30 +79,39 @@ export default function TelaVisualizarTurmaMaisInformacoes(props: any){
       operacao: '==',
       segundoCampo: cod_turma
     })
-    return historicosEncontrados
+  return historicosEncontrados
   }
 
-  async function buscaAlunoPorHistorico(){
-    let todosAlunos: IAluno[] = []
-    const historicos = await buscaHistoricoPorTurma(props?.route?.params?.turma?.cod_turma)
-    historicos.map(async (historico) => {
-      let alunoEncontrado = await servicoAluno.buscar({
-        primeiroCampo: 'matricula',
-        operacao: '==',
-        segundoCampo: historico.matricula
+  async function buscaAlunoPorHistorico(): Promise<IAluno[]>{  
+    return new Promise(async (resolve, reject) => {
+      let todosAlunos: IAluno[] = []
+      setTimeout(()=>reject('timeout'), 10 * 1000)
+      
+      const historicos = await buscaHistoricoPorTurma(props?.route?.params?.turma?.cod_turma)
+      historicos.map(async (historico) => {
+        let alunoEncontrado = await servicoAluno.buscar({
+          primeiroCampo: 'matricula',
+          operacao: '==',
+          segundoCampo: historico.matricula
+        });
+        if (alunoEncontrado.length) {
+          todosAlunos.push({
+            cidade: alunoEncontrado[0].cidade,
+            endereco: alunoEncontrado[0].endereco,
+            foto: alunoEncontrado[0].foto,
+            matricula: alunoEncontrado[0].matricula,
+            nome: alunoEncontrado[0].nome
+          });
+        }
       })
-      if(alunoEncontrado.length){
-        todosAlunos.push({
-          cidade: alunoEncontrado[0].cidade,
-          endereco:alunoEncontrado[0].endereco,
-          foto:alunoEncontrado[0].foto,
-          matricula:alunoEncontrado[0].matricula,
-          nome:alunoEncontrado[0].nome
-        })
-      }
+
+        resolve(todosAlunos)
     })
 
-    return todosAlunos
+  }
+
+  function aoClicarEmTenteNovamente(){
+    props.navigation.replace('VisualizarTurmaMaisInformacoes', {turma: props.route.params.turma})
   }
 
   useEffect(() => {
@@ -110,6 +121,9 @@ export default function TelaVisualizarTurmaMaisInformacoes(props: any){
         setAlunos(alunos)
         setCarregando(false)
       }, 1000);
+    }).catch(error=>{
+      setCarregando(false)
+      setTemTimeout(true) 
     })
   }, [])
 
@@ -128,6 +142,10 @@ export default function TelaVisualizarTurmaMaisInformacoes(props: any){
       {carregando && <ActivityIndicator size={'large'}/>}
       <SafeAreaView>
         {!carregando && <FlatList numColumns={3} data={alunos} renderItem={renderizaAlunosFlatList} ItemSeparatorComponent={separador} keyExtractor={aluno => aluno.matricula} />}
+        {temTimeout && <View>
+            <Text>Tempo de 10 segundos  expirado!</Text>
+            <Button onPress={aoClicarEmTenteNovamente} title='Tentar novamente'/>
+          </View>}
       </SafeAreaView>
     </View>
   )

@@ -8,6 +8,7 @@ import TelaTurma from "../../Turma";
 import TelaVisualizarTurma from "../../VisualizarTurma";
 import TelaMenu from "..";
 import TelaVisualizarTurmaMaisInformacoes from "../../VisualizarTurmaMaisInformacoes";
+import TelaVisuaizarAluno from "../../VisualizarAluno";
 
 export default function TelaStackMenu() {
   const Stack = createStackNavigator();
@@ -22,6 +23,7 @@ export default function TelaStackMenu() {
       <Stack.Screen name="Turma" component={TelaTurma} />
       <Stack.Screen name="VisualizarTurma" component={TelaVisualizarTurma} />
       <Stack.Screen name="VisualizarTurmaMaisInformacoes" component={TelaVisualizarTurmaMaisInformacoes} />
+      <Stack.Screen name="VisualizarAluno" component={TelaVisuaizarAluno} />
     </Stack.Navigator>
   );
 }
