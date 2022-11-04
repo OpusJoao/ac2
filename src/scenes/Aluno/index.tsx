@@ -1,10 +1,11 @@
 import { Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import ServicoAluno from '../../services/Aluno/ServicoAluno';
 import AlunoRepositorioFirebase from '../../repositories/AlunoRepositorioFirebase';
-import db from '../../database/firebase/db';
+import { db, storage } from '../../database/firebase/db';
 import { useEffect, useState } from 'react';
 import { IAluno } from '../../interfaces/aluno/IAluno';
 import { launchImageLibrary } from 'react-native-image-picker'
+import { getDownloadURL, ref, uploadBytes, uploadString } from 'firebase/storage';
 
 export default function TelaAluno(){
   const servicoAluno = new ServicoAluno(new AlunoRepositorioFirebase(db))
@@ -40,8 +41,23 @@ export default function TelaAluno(){
     setAluno({ ...aluno, foto: input })
   }
 
+  function uploadArquivo(){
+    return new Promise((resolve,reject) => {
+      const storageRef = ref(storage, aluno.matricula);
+
+    uploadString(storageRef, aluno.foto, 'data_url').then( async (snapshot) => {
+      await getDownloadURL(storageRef)
+      .then((url) => {
+        aluno.foto = url
+        resolve(true)  
+      })
+    });
+    })
+  }
+
   async function onPressSalvarAluno() {
     setCarregando(true)
+    await uploadArquivo()
     const alunoCriado = await servicoAluno.criar(aluno)
     alert(alunoCriado.msg)
     setCarregando(false)
@@ -81,7 +97,6 @@ export default function TelaAluno(){
       mediaType: 'photo',
       quality: 0.6,
     }, (response) => {
-      console.log(response)
       if(response && !response.errorCode && !response?.didCancel && response?.assets?.length){
         onChangeFotoAluno(response?.assets[0]?.uri || '')
       }

@@ -1,7 +1,7 @@
 import { Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import ServicoHistorico from '../../services/Historico/ServicoHistorico';
 import HistoricoRepositorioFirebase from '../../repositories/HistoricoRepositorio';
-import db from '../../database/firebase/db';
+import { db } from '../../database/firebase/db';
 import { useEffect, useState } from 'react';
 import { IHistorico, IHistoricoExtendido } from '../../interfaces/historico/IHistorico';
 import TurmaRepositorioFirebase from '../../repositories/TurmaRepositorio';
