@@ -1,7 +1,7 @@
 import { ActivityIndicator, Button, FlatList, Image, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
 import ServicoTurma from '../../services/Turma/ServicoTurma';
 import TurmaRepositorioFirebase from '../../repositories/TurmaRepositorio';
-import db from '../../database/firebase/db';
+import { db } from '../../database/firebase/db';
 import { useEffect, useState } from 'react';
 import { ITurma, ITurmaExtendida } from '../../interfaces/turma/ITurma';
 import DisciplinaRepositorioFirebase from '../../repositories/DisciplinaRepositorio';
@@ -34,7 +34,6 @@ export default function TelaVisualizarTurmaMaisInformacoes(props: any){
 
 
   function renderizaAlunosFlatList({item}: {item:IAluno}) {
-    console.log(item)
     return (
       <View style={{
         display: 'flex',
@@ -47,7 +46,7 @@ export default function TelaVisualizarTurmaMaisInformacoes(props: any){
         <Image
             style={{ width: 100, height: 100 }}
             source={{
-              uri: `https://ui-avatars.com/api/?name=${item.nome}`,
+              uri: item.foto,
             }}
             defaultSource={{
               uri: "https://cdn-icons-png.flaticon.com/512/892/892781.png?w=360",

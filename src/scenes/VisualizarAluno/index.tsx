@@ -1,7 +1,7 @@
 import { Button, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import ServicoAluno from '../../services/Aluno/ServicoAluno';
 import AlunoRepositorioFirebase from '../../repositories/AlunoRepositorioFirebase';
-import db from '../../database/firebase/db';
+import { db } from '../../database/firebase/db';
 import { useEffect, useState } from 'react';
 import { IAluno } from '../../interfaces/aluno/IAluno';
 import { launchImageLibrary } from 'react-native-image-picker'
