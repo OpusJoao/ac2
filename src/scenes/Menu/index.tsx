@@ -42,6 +42,9 @@ export default function TelaMenu({ navigation }: any) {
       <Pressable style={styles.button} onPress={() => navigation.push("Turma")}>
         <Text style={styles.text}>Turma</Text>
       </Pressable>
+      <Pressable style={styles.button} onPress={() => navigation.push("VisualizarTurma")}>
+        <Text style={styles.text}>Visualizar Turma</Text>
+      </Pressable>
       <Pressable
         style={styles.button}
         onPress={() => navigation.push("Historico")}
