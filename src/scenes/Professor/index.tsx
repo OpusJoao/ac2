@@ -1,7 +1,7 @@
 import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
 import ServicoProfessor from '../../services/Professor/ServicoProfessor';
 import ProfessorRepositorioFirebase from '../../repositories/ProfessorRepositorio';
-import db from '../../database/firebase/db';
+import { db } from '../../database/firebase/db';
 import { useEffect, useState } from 'react';
 import { IProfessor } from '../../interfaces/professor/IProfessor';
 

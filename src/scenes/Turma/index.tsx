@@ -1,7 +1,7 @@
 import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
 import ServicoTurma from '../../services/Turma/ServicoTurma';
 import TurmaRepositorioFirebase from '../../repositories/TurmaRepositorio';
-import db from '../../database/firebase/db';
+import { db } from '../../database/firebase/db';
 import { useEffect, useState } from 'react';
 import { ITurma, ITurmaExtendida } from '../../interfaces/turma/ITurma';
 import DisciplinaRepositorioFirebase from '../../repositories/DisciplinaRepositorio';

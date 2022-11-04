@@ -1,7 +1,7 @@
 import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
 import ServicoDisciplina from '../../services/Disciplina/ServicoDisciplina';
 import DisciplinaRepositorioFirebase from '../../repositories/DisciplinaRepositorio';
-import db from '../../database/firebase/db';
+import { db } from '../../database/firebase/db';
 import { useEffect, useState } from 'react';
 import { IDisciplina } from '../../interfaces/disciplina/IDisciplina';
 
