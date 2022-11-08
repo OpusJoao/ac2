@@ -90,6 +90,7 @@ export default function TelaVisualizarTurmaMaisInformacoes(props: any){
       setTimeout(()=>reject('timeout'), 10 * 1000)
       
       const historicos = await buscaHistoricoPorTurma(props?.route?.params?.turma?.cod_turma)
+      if(historicos.length == 0 ) reject('semHistorico')
       historicos.map(async (historico) => {
         let alunoEncontrado = await servicoAluno.buscar({
           primeiroCampo: 'matricula',
@@ -125,6 +126,10 @@ export default function TelaVisualizarTurmaMaisInformacoes(props: any){
       }, 1000);
     }).catch(error=>{
       setCarregando(false)
+      if(error == 'semHistorico'){
+        alert('Turma não possui historico!')
+        return
+      }
       setTemTimeout(true) 
     })
   }, [])
