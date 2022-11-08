@@ -2,10 +2,13 @@ import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-nativ
 import ServicoProfessor from '../../services/Professor/ServicoProfessor';
 import ProfessorRepositorioFirebase from '../../repositories/ProfessorRepositorio';
 import { db } from '../../database/firebase/db';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IProfessor } from '../../interfaces/professor/IProfessor';
+import ContextoFundo from '../../context/contextoFundo';
 
 export default function TelaProfessor(){
+  const {fundo, setFundo} = useContext(ContextoFundo)
+
   const servicoProfessor = new ServicoProfessor(new ProfessorRepositorioFirebase(db))
   const [professor, setProfessor] = useState<IProfessor>({
     cidade: "",
@@ -77,7 +80,7 @@ export default function TelaProfessor(){
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: `${fundo}`,
       alignItems: 'center',
       justifyContent: 'center',
     },

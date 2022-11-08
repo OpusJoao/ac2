@@ -1,10 +1,14 @@
+import { useContext } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
+import ContextoFundo from "../../context/contextoFundo";
 
 export default function TelaMenu({ navigation }: any) {
+  const {fundo, setFundo} = useContext(ContextoFundo)
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: "#fff",
+      backgroundColor: `${fundo}`,
       alignItems: "center",
       justifyContent: "center",
     },

@@ -2,7 +2,7 @@ import { ActivityIndicator, Button, FlatList, Image, SafeAreaView, StyleSheet, T
 import ServicoTurma from '../../services/Turma/ServicoTurma';
 import TurmaRepositorioFirebase from '../../repositories/TurmaRepositorio';
 import { db } from '../../database/firebase/db';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ITurma, ITurmaExtendida } from '../../interfaces/turma/ITurma';
 import DisciplinaRepositorioFirebase from '../../repositories/DisciplinaRepositorio';
 import ProfessorRepositorioFirebase from '../../repositories/ProfessorRepositorio';
@@ -12,8 +12,11 @@ import ServicoAluno from '../../services/Aluno/ServicoAluno';
 import AlunoRepositorioFirebase from '../../repositories/AlunoRepositorioFirebase';
 import { IHistorico } from '../../interfaces/historico/IHistorico';
 import { IAluno } from '../../interfaces/aluno/IAluno';
+import ContextoFundo from '../../context/contextoFundo';
 
 export default function TelaVisualizarTurmaMaisInformacoes(props: any){
+  const {fundo, setFundo} = useContext(ContextoFundo)
+
   const servicoTurma = new ServicoTurma(
     new TurmaRepositorioFirebase(db),
     new DisciplinaRepositorioFirebase(db),
@@ -87,6 +90,7 @@ export default function TelaVisualizarTurmaMaisInformacoes(props: any){
       setTimeout(()=>reject('timeout'), 10 * 1000)
       
       const historicos = await buscaHistoricoPorTurma(props?.route?.params?.turma?.cod_turma)
+      if(historicos.length == 0 ) reject('semHistorico')
       historicos.map(async (historico) => {
         let alunoEncontrado = await servicoAluno.buscar({
           primeiroCampo: 'matricula',
@@ -122,6 +126,10 @@ export default function TelaVisualizarTurmaMaisInformacoes(props: any){
       }, 1000);
     }).catch(error=>{
       setCarregando(false)
+      if(error == 'semHistorico'){
+        alert('Turma não possui historico!')
+        return
+      }
       setTemTimeout(true) 
     })
   }, [])
@@ -130,7 +138,7 @@ export default function TelaVisualizarTurmaMaisInformacoes(props: any){
     container: {
       padding: 16,
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: `${fundo}`,
       alignItems: 'center',
       justifyContent: 'center',
     },

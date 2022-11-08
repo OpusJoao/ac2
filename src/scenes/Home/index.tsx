@@ -1,7 +1,10 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import ContextoFundo from "../../context/contextoFundo";
 
 export default function TelaHome() {
+  const {fundo, setFundo} = useContext(ContextoFundo)
+
   const [integrantes, setIntegrantes] = useState([
     {
       nome: "João Vitor Antunes Ferreira",
@@ -16,7 +19,7 @@ export default function TelaHome() {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: "#fff",
+      backgroundColor: `${fundo}`,
       alignItems: "center",
       justifyContent: "center",
     },
