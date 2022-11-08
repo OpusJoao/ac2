@@ -2,7 +2,7 @@ import { Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View }
 import ServicoHistorico from '../../services/Historico/ServicoHistorico';
 import HistoricoRepositorioFirebase from '../../repositories/HistoricoRepositorio';
 import { db } from '../../database/firebase/db';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IHistorico, IHistoricoExtendido } from '../../interfaces/historico/IHistorico';
 import TurmaRepositorioFirebase from '../../repositories/TurmaRepositorio';
 import AlunoRepositorioFirebase from '../../repositories/AlunoRepositorioFirebase';
@@ -12,7 +12,10 @@ import DisciplinaRepositorioFirebase from '../../repositories/DisciplinaReposito
 import ProfessorRepositorioFirebase from '../../repositories/ProfessorRepositorio';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ConfirmProvider, useConfirm } from 'react-native-confirm-dialog';
+import ContextoFundo from '../../context/contextoFundo';
 export default function TelaHistorico(){
+  const {fundo, setFundo} = useContext(ContextoFundo)
+
   const servicoHistorico = new ServicoHistorico(
     new HistoricoRepositorioFirebase(db),
     new ServicoTurma(new TurmaRepositorioFirebase(db), new DisciplinaRepositorioFirebase(db), new ProfessorRepositorioFirebase(db)),
@@ -201,7 +204,7 @@ export default function TelaHistorico(){
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: `${fundo}`,
       alignItems: 'center',
       justifyContent: 'center',
     },

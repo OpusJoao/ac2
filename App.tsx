@@ -4,12 +4,17 @@ import TelaStackMenu from "./src/scenes/Menu/StackMenu";
 import TelaStackHome from "./src/scenes/Home/StackHome";
 import { Image } from "react-native";
 import TelaStackConfiguracoes from "./src/scenes/Configuracoes/StackConfiguracoes";
+import ContextoFundo from "./src/context/contextoFundo";
+import { useState } from "react";
 
 const Tab = createBottomTabNavigator();
 
+
 export default function App() {
+  const [fundo, setFundo] = useState('#fff')
   return (
     <NavigationContainer>
+      <ContextoFundo.Provider value={{fundo, setFundo}}>
       <Tab.Navigator screenOptions={{ headerShown: false }}>
         <Tab.Screen
           name="Home"
@@ -54,6 +59,7 @@ export default function App() {
           }}
         />
       </Tab.Navigator>
+      </ContextoFundo.Provider>
     </NavigationContainer>
   );
 }

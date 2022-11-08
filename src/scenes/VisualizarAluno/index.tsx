@@ -2,11 +2,14 @@ import { Button, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity,
 import ServicoAluno from '../../services/Aluno/ServicoAluno';
 import AlunoRepositorioFirebase from '../../repositories/AlunoRepositorioFirebase';
 import { db } from '../../database/firebase/db';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IAluno } from '../../interfaces/aluno/IAluno';
 import { launchImageLibrary } from 'react-native-image-picker'
+import ContextoFundo from '../../context/contextoFundo';
 
 export default function TelaVisuaizarAluno(props:any){
+  const {fundo, setFundo} = useContext(ContextoFundo)
+
   const servicoAluno = new ServicoAluno(new AlunoRepositorioFirebase(db))
   const [aluno, setAluno] = useState<IAluno>({
     matricula: "",
@@ -47,7 +50,7 @@ export default function TelaVisuaizarAluno(props:any){
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: `${fundo}`,
       alignItems: 'center',
       justifyContent: 'center',
     },

@@ -2,10 +2,13 @@ import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-nativ
 import ServicoDisciplina from '../../services/Disciplina/ServicoDisciplina';
 import DisciplinaRepositorioFirebase from '../../repositories/DisciplinaRepositorio';
 import { db } from '../../database/firebase/db';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IDisciplina } from '../../interfaces/disciplina/IDisciplina';
+import ContextoFundo from '../../context/contextoFundo';
 
 export default function TelaDisciplina(){
+  const {fundo, setFundo} = useContext(ContextoFundo)
+
   const servicoDisciplina = new ServicoDisciplina(new DisciplinaRepositorioFirebase(db))
   const [discipina, setDisciplina] = useState<IDisciplina>({
     cod_disc: "",
@@ -73,7 +76,7 @@ export default function TelaDisciplina(){
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: `${fundo}`,
       alignItems: 'center',
       justifyContent: 'center',
     },
